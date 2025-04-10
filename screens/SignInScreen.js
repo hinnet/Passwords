@@ -1,8 +1,8 @@
-// import { Alert } from 'react-native';
-// import * as LocalAuthentication from 'expo-local-authentication';
+import { Alert } from 'react-native';
 import { SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Button, TextInput, Text } from 'react-native-paper';
 import { useState } from 'react';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function SignInScreen({ navigation, route }) {
     const [email, setEmail] = useState('');
@@ -10,8 +10,18 @@ export default function SignInScreen({ navigation, route }) {
     const { setIsLoggedIn } = route.params;
 
     const handleEmailLogin = () => {
-        setIsLoggedIn(true);
-        console.log("This needs to be implemented!");
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            setIsLoggedIn(true);
+        })
+        .catch((error) => {
+            console.log("Error in signing in", error)
+            Alert.alert('Error', 'Invalid username or password');
+        });
+        
     };
 
     return(

@@ -1,19 +1,21 @@
-// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Button, TextInput } from 'react-native-paper';
 import { Keyboard, TouchableWithoutFeedback, StyleSheet, SafeAreaView } from 'react-native';
 import { useState } from 'react';
+import { firebaseConfig } from "../firebaseConfig"; 
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function SignUpScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // const auth = getAuth();
-    // createUserWithEmailAndPassword(auth, email, password)
-    //     .then((userCredential) => {
-    //         const user = userCredential.user;
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     })
+
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
