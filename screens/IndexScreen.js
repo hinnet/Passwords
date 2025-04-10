@@ -6,7 +6,7 @@ export default function IndexScreen({ navigation }) {
             <Text>Index</Text>
             <Button
             title="Passwords"
-            onPress={() => navigation.navigate('Passwords')} // Navigate to the Passwords screen
+            onPress={() => navigation.navigate('Passwords')}
             />
         </SafeAreaView>
     );

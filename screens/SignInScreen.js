@@ -1,0 +1,95 @@
+// import { Alert } from 'react-native';
+// import * as LocalAuthentication from 'expo-local-authentication';
+import { SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Button, TextInput, Text } from 'react-native-paper';
+import { useState } from 'react';
+
+export default function SignInScreen({ navigation, route }) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { setIsLoggedIn } = route.params;
+
+    const handleEmailLogin = () => {
+        setIsLoggedIn(true);
+        console.log("This needs to be implemented!");
+    };
+
+    return(
+        // Hides displayed keyboard if user presses anywhere outside of keyboard on the screen
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <SafeAreaView style={styles.container}>
+                <Text variant="displayMedium" style={{ marginBottom: 40 }}>Log in</Text>
+                <TextInput 
+                label="Email"
+                mode='outlined'
+                value={email}
+                onChangeText={email => setEmail(email)}
+                style={styles.input}
+                />
+                <TextInput 
+                label="Password"
+                mode='outlined'
+                value={password}
+                onChangeText={password => setPassword(password)}
+                secureTextEntry
+                right={<TextInput.Icon icon="eye" />}
+                style={styles.input}
+                />
+                <Button 
+                mode="contained"
+                onPress={handleEmailLogin}
+                style={styles.button1}
+                labelStyle={{ fontSize: 16 }}
+                >
+                    Sign in
+                </Button>
+                <Text variant="titleSmall">or</Text>
+                <Button 
+                mode="contained"
+                onPress={() => navigation.navigate('Biometric sign in')}
+                style={styles.button2}
+                labelStyle={{ fontSize: 19 }}
+                >
+                    Sign in with Face ID / Touch ID
+                </Button>
+                <Text variant="titleMedium" style={{ marginTop: 25 }}>Not registered yet?</Text>
+                <Button 
+                mode="contained"
+                onPress={() => navigation.navigate('Sign up')} 
+                style={styles.button1}
+                labelStyle={{ fontSize: 16 }}
+                >
+                    Sign up
+                </Button>
+            </SafeAreaView>
+        </TouchableWithoutFeedback>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        marginTop: 40,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    input: {
+        alignSelf: 'stretch',
+        marginVertical: 5,
+        marginHorizontal: 30,
+        height: 60,
+    },
+    button1: {
+        justifyContent: 'center',
+        height: 50,
+        margin: 15,
+        borderRadius: 5,
+    },
+    button2: {
+        justifyContent: 'center',
+        height: 80,
+        borderRadius: 5,
+        margin: 15,
+    },
+});
