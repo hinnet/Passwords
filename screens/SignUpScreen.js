@@ -1,21 +1,24 @@
 import { Button, TextInput } from 'react-native-paper';
 import { Keyboard, TouchableWithoutFeedback, StyleSheet, SafeAreaView } from 'react-native';
 import { useState } from 'react';
-import { firebaseConfig } from "../firebaseConfig"; 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../firebaseConfig';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
-export default function SignUpScreen() {
+export default function SignUpScreen({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+    const handleSignUp = () => {
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                navigation.navigate('Sign in');
+            })
+            .catch((err) => {
+                console.log(err);
+                Alert.alert('Error', 'An error occurred during sign up');
+            })
+    }
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -38,7 +41,7 @@ export default function SignUpScreen() {
                 />
                 <Button 
                 mode="contained"
-                onPress={() => console.log('Pressed')}
+                onPress={handleSignUp}
                 style={styles.button}
                 labelStyle={{ fontSize: 16 }}
                 >
