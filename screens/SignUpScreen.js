@@ -1,0 +1,69 @@
+// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Button, TextInput } from 'react-native-paper';
+import { Keyboard, TouchableWithoutFeedback, StyleSheet, SafeAreaView } from 'react-native';
+import { useState } from 'react';
+
+export default function SignUpScreen() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    // const auth = getAuth();
+    // createUserWithEmailAndPassword(auth, email, password)
+    //     .then((userCredential) => {
+    //         const user = userCredential.user;
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //     })
+
+    return (
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <SafeAreaView style={styles.container}>
+                <TextInput 
+                label="Email"
+                mode='outlined'
+                value={email}
+                onChangeText={email => setEmail(email)}
+                style={styles.input}
+                />
+                <TextInput 
+                label="Password"
+                mode='outlined'
+                value={password}
+                onChangeText={password => setPassword(password)}
+                secureTextEntry
+                right={<TextInput.Icon icon="eye" />}
+                style={styles.input}
+                />
+                <Button 
+                mode="contained"
+                onPress={() => console.log('Pressed')}
+                style={styles.button}
+                labelStyle={{ fontSize: 16 }}
+                >
+                    Sign up
+                </Button>
+            </SafeAreaView>
+        </TouchableWithoutFeedback>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    input: {
+        alignSelf: 'stretch',
+        marginVertical: 5,
+        marginHorizontal: 30,
+        height: 60,
+    },
+    button: {
+        justifyContent: 'center',
+        height: 50,
+        margin: 15,
+        borderRadius: 5,
+      },
+  });
