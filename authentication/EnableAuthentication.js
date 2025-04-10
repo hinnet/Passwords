@@ -2,8 +2,8 @@ import { Alert } from 'react-native';
 import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics';
 
 export async function EnableAuthentication() {
-    console.log('enable try');
     const Biometrics = new ReactNativeBiometrics();
+    
     try {
         const resultObject = await Biometrics.isSensorAvailable();
         const { available, biometryType } = resultObject;

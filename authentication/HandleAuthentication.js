@@ -1,10 +1,9 @@
 import { Alert } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
 
-// const Biometrics = new ReactNativeBiometrics();
-
 export async function HandleAuthentication() {
     const Biometrics = new ReactNativeBiometrics();
+
     try {
         const { success } = await Biometrics.simplePrompt({ promptMessage: 'Authenticate to continue' });
 
