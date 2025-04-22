@@ -10,6 +10,7 @@ export default function SignUpScreen({ navigation }) {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const [secure, setSecure] = useState(true);
 
     const handleSignUp = () => {
         setEmailError(EmailValidation(email));
@@ -33,6 +34,10 @@ export default function SignUpScreen({ navigation }) {
         })
     }
 
+    const passwordDisplay = () => {
+        setSecure(!secure);
+    };
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <SafeAreaView style={styles.container}>
@@ -51,8 +56,13 @@ export default function SignUpScreen({ navigation }) {
                 mode='outlined'
                 value={password}
                 onChangeText={password => setPassword(password)}
-                secureTextEntry
-                right={<TextInput.Icon icon="eye" />}
+                secureTextEntry={secure}
+                right={
+                    <TextInput.Icon
+                        icon={secure ? "eye-off" : "eye"}
+                        onPress={passwordDisplay}
+                    />
+                }
                 style={styles.input}
                 />
                 <HelperText type='error' visible={passwordError}>
