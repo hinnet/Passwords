@@ -1,12 +1,15 @@
-import { Button, StyleSheet, SafeAreaView, Text } from 'react-native';
+import { Button, StyleSheet, SafeAreaView } from 'react-native';
 
 export default function IndexScreen({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
-            <Text>Index</Text>
             <Button
             title="Passwords"
             onPress={() => navigation.navigate('Passwords')}
+            />
+            <Button
+            title="Create Password"
+            onPress={() => navigation.navigate('Create Password')}
             />
         </SafeAreaView>
     );

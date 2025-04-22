@@ -8,7 +8,15 @@ export function EmailValidation(email) {
 }
 
 export function PasswordValidation(password) {
-    if (!password || password.length < 6) {
+    if (!password || password.trim().length < 6) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+export function WebsiteValidation(website) {
+    if (!website || website.trim().length < 1) {
         return true;
     } else {
         return false;
