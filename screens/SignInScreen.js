@@ -8,6 +8,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 export default function SignInScreen({ navigation, route }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [secure, setSecure] = useState(true);
     const { setIsLoggedIn } = route.params;
 
     const handleEmailLogin = () => {
@@ -21,6 +22,10 @@ export default function SignInScreen({ navigation, route }) {
             console.log("Error in signing in", error)
             Alert.alert('Error', 'Invalid username or password');
         });
+    };
+
+    const passwordDisplay = () => {
+        setSecure(!secure);
     };
 
     return(
@@ -40,8 +45,13 @@ export default function SignInScreen({ navigation, route }) {
                 mode='outlined'
                 value={password}
                 onChangeText={password => setPassword(password)}
-                secureTextEntry
-                right={<TextInput.Icon icon="eye" />}
+                secureTextEntry={secure}
+                right={
+                    <TextInput.Icon
+                        icon={secure ? "eye-off" : "eye"}
+                        onPress={passwordDisplay}
+                    />
+                }
                 style={styles.input}
                 />
                 <Button 
