@@ -48,7 +48,7 @@ export default function SignUpScreen({ navigation }) {
                 onChangeText={email => setEmail(email)}
                 style={styles.input}
                 />
-                <HelperText type='error' visible={emailError}>
+                <HelperText style={styles.helperText} type='error' visible={emailError}>
                     Enter valid email address
                 </HelperText>
                 <TextInput 
@@ -65,7 +65,7 @@ export default function SignUpScreen({ navigation }) {
                 }
                 style={styles.input}
                 />
-                <HelperText type='error' visible={passwordError}>
+                <HelperText style={styles.helperText} type='error' visible={passwordError}>
                     Password too short
                 </HelperText>
                 <Button 
@@ -99,5 +99,10 @@ const styles = StyleSheet.create({
         height: 50,
         margin: 15,
         borderRadius: 5,
-      },
+    },
+    helperText: {
+        marginTop: -5,
+        marginLeft: 25,
+        alignSelf: 'flex-start',
+    },
   });

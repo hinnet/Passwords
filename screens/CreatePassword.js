@@ -1,17 +1,25 @@
 import { useState } from 'react';
-import { SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { database } from '../firebaseConfig';
 import { ref, push } from "firebase/database";
-import { Button, HelperText, TextInput } from 'react-native-paper';
+import { Button, HelperText, TextInput, IconButton, Text } from 'react-native-paper';
 import { EmailValidation, WebsiteValidation } from '../components/InputValidation';
+import CryptoJS from 'crypto-js';
+import { getPassword } from '../password_api';
+import { useEffect } from 'react';
 
 export default function CreatePassword() {
     const [password, setPassword] = useState({
         email: '',
         website: '',
+        generatedPassword: '',
     })
     const [emailError, setEmailError] = useState(false);
     const [websiteError, setWebsiteError] = useState(false);
+
+    useEffect(() => {
+        generateNewPassword();
+    }, []);
 
     const handleSave = () => {
         setEmailError(EmailValidation(password.email));
@@ -21,6 +29,11 @@ export default function CreatePassword() {
         } else {
             push(ref(database, '/passwords'), password);
         }
+    };
+
+    const generateNewPassword = () => {
+        // setPassword({...password, generatedPassword: 'juuh'})
+        setPassword({...password, generatedPassword: getPassword()})
     };
 
   return (
@@ -33,7 +46,7 @@ export default function CreatePassword() {
         onChangeText={email => setPassword({...password, email})}
         style={styles.input}
         />
-        <HelperText type='error' visible={emailError}>
+        <HelperText style={styles.helperText} type='error' visible={emailError}>
             Enter valid email address
         </HelperText>
         <TextInput
@@ -43,16 +56,27 @@ export default function CreatePassword() {
         onChangeText={website => setPassword({...password, website})}
         style={styles.input}
         />
-        <HelperText type='error' visible={websiteError}>
+        <HelperText style={styles.helperText} type='error' visible={websiteError}>
             Set website or service provider
         </HelperText>
+        <View style={styles.wrapper}>
+            <Text style={styles.floatingLabel}>Password</Text>
+            <View style={styles.passwordBox}>
+            <Text style={styles.passwordText}>{password.generatedPassword}</Text>
+            <IconButton
+            icon="reload"
+            size={20}
+            onPress={(generateNewPassword)}
+            />
+        </View>
+        </View>
         <Button 
         mode="contained"
         onPress={handleSave}
         style={styles.button}
         labelStyle={{ fontSize: 16 }}
         >
-            Create
+            Save new password
         </Button>
     </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -78,4 +102,42 @@ const styles = StyleSheet.create({
         margin: 15,
         borderRadius: 5,
     },
+    helperText: {
+        marginTop: -5,
+        marginLeft: 25,
+        alignSelf: 'flex-start',
+    },
+    wrapper: {
+        marginVertical: 20,
+        position: 'relative',
+        width: '100%',
+    },
+    floatingLabel: {
+        position: 'absolute',
+        top: -3,
+        left: 39,
+        backgroundColor: '#fff',
+        paddingHorizontal: 6,
+        fontSize: 12,
+        color: '#666',
+        zIndex: 1,
+    },
+    passwordBox: {
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        marginVertical: 5,
+        marginHorizontal: 30,
+        height: 60,
+        justifyContent: 'space-between',
+        borderWidth: 1,
+        borderColor: 'grey',
+        borderRadius: 4,
+        paddingLeft: 15,
+        backgroundColor: '#fff',
+      },
+      passwordText: {
+        color: 'grey',
+        fontSize: 16,
+      },
   });

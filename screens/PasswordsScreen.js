@@ -5,10 +5,10 @@ import { ScrollView, SafeAreaView, FlatList, StyleSheet, View } from 'react-nati
 import { Searchbar } from 'react-native-paper';
 
 export default function PasswordsScreen() {
-  const [password, setPassword] = useState({
-    email: '',
-    website: '',
-  })
+  // const [password, setPassword] = useState({
+  //   email: '',
+  //   website: '',
+  // })
   const [passwords, setPasswords] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
