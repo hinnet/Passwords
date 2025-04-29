@@ -4,6 +4,7 @@ import { Button, TextInput, Text } from 'react-native-paper';
 import { useState } from 'react';
 import { auth } from '../firebase/firebaseConfig';
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { BiometricAuthentication } from '../authentication/BiometricAuthentication';
 
 export default function SignInScreen({ navigation, setIsLoggedIn }) {
     const [email, setEmail] = useState('');
@@ -63,7 +64,7 @@ export default function SignInScreen({ navigation, setIsLoggedIn }) {
                 <Text variant="titleSmall">or</Text>
                 <Button 
                 mode="contained"
-                onPress={() => navigation.navigate('Biometric sign in')}
+                onPress={() => BiometricAuthentication(setIsLoggedIn)}
                 style={styles.button2}
                 labelStyle={{ fontSize: 19 }}
                 >
