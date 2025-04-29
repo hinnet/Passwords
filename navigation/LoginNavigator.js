@@ -9,8 +9,12 @@ const Stack = createNativeStackNavigator();
 export default function LoginNavigator({ setIsLoggedIn }) {
     return(
         <Stack.Navigator>
-            <Stack.Screen name="Sign in" component={SignInScreen} initialParams={{ setIsLoggedIn }} />
-            <Stack.Screen name="Biometric sign in" component={BiometricSignIn} initialParams={{ setIsLoggedIn }} />
+            <Stack.Screen name="Sign in">
+                {props => <SignInScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+            </Stack.Screen>
+            <Stack.Screen name="Biometric sign in">
+                {props => <BiometricSignIn {...props} setIsLoggedIn={setIsLoggedIn} />}
+            </Stack.Screen>
             <Stack.Screen name="Sign up" component={SignUpScreen} />
         </Stack.Navigator>
     );

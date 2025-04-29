@@ -1,6 +1,7 @@
 import { Button, StyleSheet, SafeAreaView } from 'react-native';
+import signUserOut from '../firebase/signUserOut';
 
-export default function IndexScreen({ navigation }) {
+export default function IndexScreen({ navigation, setIsLoggedIn }) {
     return (
         <SafeAreaView style={styles.container}>
             <Button
@@ -10,6 +11,10 @@ export default function IndexScreen({ navigation }) {
             <Button
             title="Create Password"
             onPress={() => navigation.navigate('Create Password')}
+            />
+            <Button
+            title="Sign Out"
+            onPress={() => signUserOut(setIsLoggedIn)}
             />
         </SafeAreaView>
     );

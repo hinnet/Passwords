@@ -1,9 +1,9 @@
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { Alert, Keyboard, TouchableWithoutFeedback, StyleSheet, SafeAreaView } from 'react-native';
 import { useState } from 'react';
-import { auth } from '../firebaseConfig';
+import { auth } from '../firebase/firebaseConfig';
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { EmailValidation, PasswordValidation } from '../components/InputValidation';
+import { EmailValidation, PasswordValidation } from '../validation/InputValidation';
 
 export default function SignUpScreen({ navigation }) {
     const [email, setEmail] = useState('');
@@ -25,7 +25,7 @@ export default function SignUpScreen({ navigation }) {
             navigation.navigate('Sign in');
         })
         .catch((error) => {
-            console.log(error.message);
+            console.error(error.message);
             if (error.code === 'auth/email-already-in-use') {
                 Alert.alert('Error', 'Email is already in use');
             } else {

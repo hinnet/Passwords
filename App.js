@@ -11,11 +11,11 @@ export default function App() {
     <PaperProvider>
       <NavigationContainer>
         {isLoggedIn ? (
-          <StackNavigator />
+          <StackNavigator setIsLoggedIn={setIsLoggedIn} />
         ) : (
           <LoginNavigator setIsLoggedIn={setIsLoggedIn} />
         )}
       </NavigationContainer>
     </PaperProvider>
   );
-}
+};

@@ -1,5 +1,5 @@
 import { remove, onValue, ref } from 'firebase/database';
-import { database } from '../firebaseConfig';
+import { database } from '../firebase/firebaseConfig';
 import { useEffect, useState } from 'react';
 import { ScrollView, SafeAreaView, FlatList, StyleSheet, View } from 'react-native';
 import { Searchbar } from 'react-native-paper';

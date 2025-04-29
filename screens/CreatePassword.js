@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback, View } from 'react-native';
-import { database } from '../firebaseConfig';
+import { database } from '../firebase/firebaseConfig';
 import { ref, push } from "firebase/database";
 import { Button, HelperText, TextInput, IconButton, Text } from 'react-native-paper';
-import { EmailValidation, WebsiteValidation } from '../components/InputValidation';
+import { EmailValidation, WebsiteValidation } from '../validation/InputValidation';
 import CryptoJS from 'crypto-js';
 import { getPassword } from '../password_api';
 import { useEffect } from 'react';

@@ -2,14 +2,13 @@ import { Alert } from 'react-native';
 import { SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Button, TextInput, Text } from 'react-native-paper';
 import { useState } from 'react';
-import { auth } from '../firebaseConfig';
+import { auth } from '../firebase/firebaseConfig';
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-export default function SignInScreen({ navigation, route }) {
+export default function SignInScreen({ navigation, setIsLoggedIn }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [secure, setSecure] = useState(true);
-    const { setIsLoggedIn } = route.params;
 
     const handleEmailLogin = () => {
         signInWithEmailAndPassword(auth, email, password)
@@ -19,7 +18,7 @@ export default function SignInScreen({ navigation, route }) {
             setIsLoggedIn(true);
         })
         .catch((error) => {
-            console.log("Error in signing in", error)
+            console.error("Error in signing in", error)
             Alert.alert('Error', 'Invalid username or password');
         });
     };
