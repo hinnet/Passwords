@@ -12,15 +12,14 @@ export default function SignInScreen({ navigation, setIsLoggedIn }) {
 
     const handleEmailLogin = () => {
         signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            setIsLoggedIn(true);
-        })
-        .catch((error) => {
-            console.error("Error in signing in", error)
-            Alert.alert('Error', 'Invalid username or password');
-        });
+            .then(() => {
+                setIsLoggedIn(true);
+                Alert.alert('Authenticated', 'Welcome!');
+            })
+            .catch((error) => {
+                console.error('Error in signing in', error);
+                Alert.alert('Error', 'Invalid username or password');
+            });
     };
 
     const passwordDisplay = () => {

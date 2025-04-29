@@ -12,27 +12,26 @@ export default function SignUpScreen({ navigation }) {
     const [passwordError, setPasswordError] = useState(false);
     const [secure, setSecure] = useState(true);
 
-    const handleSignUp = () => {
-        setEmailError(EmailValidation(email));
-        setPasswordError(PasswordValidation(password));
-        if (emailError || passwordError) {
+    const handleSignUp = async () => {
+        const emailIsValid = EmailValidation(email);
+        const passwordisValid = await PasswordValidation(password);
+
+        setEmailError(!emailIsValid);   // If email isn't valid, set error true
+        setPasswordError(!passwordisValid);     // Same with password
+        
+        if (!emailIsValid || !passwordisValid) {
             return;
         }
         createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
+        .then(() => {
             Alert.alert('Sign up successful!');
             navigation.navigate('Sign in');
         })
         .catch((error) => {
             console.error(error.message);
-            if (error.code === 'auth/email-already-in-use') {
-                Alert.alert('Error', 'Email is already in use');
-            } else {
-                Alert.alert('Error', 'An error occurred');
-            }
+            Alert.alert('Something went wrong', 'Please try again');
         })
-    }
+    };
 
     const passwordDisplay = () => {
         setSecure(!secure);
@@ -49,7 +48,7 @@ export default function SignUpScreen({ navigation }) {
                 style={styles.input}
                 />
                 <HelperText style={styles.helperText} type='error' visible={emailError}>
-                    Enter valid email address
+                    Enter valid email address.
                 </HelperText>
                 <TextInput 
                 label="Password"
@@ -66,7 +65,7 @@ export default function SignUpScreen({ navigation }) {
                 style={styles.input}
                 />
                 <HelperText style={styles.helperText} type='error' visible={passwordError}>
-                    Password too short
+                    Password must be at least 8 characters, with an uppercase letter, lowercase letter, and a numeric character.
                 </HelperText>
                 <Button 
                 mode="contained"

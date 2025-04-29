@@ -22,8 +22,8 @@ export default function CreatePassword() {
     }, []);
 
     const handleSave = () => {
-        setEmailError(EmailValidation(password.email));
-        setWebsiteError(WebsiteValidation(password.website));
+        setEmailError(!EmailValidation(password.email));    // If email isn't valid, set error true
+        setWebsiteError(!WebsiteValidation(password.website));    // Same with website
         if (emailError || websiteError) {
             return;
         } else {
@@ -32,7 +32,6 @@ export default function CreatePassword() {
     };
 
     const generateNewPassword = () => {
-        // setPassword({...password, generatedPassword: 'juuh'})
         setPassword({...password, generatedPassword: getPassword()})
     };
 
