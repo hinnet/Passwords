@@ -2,8 +2,7 @@ import { SafeAreaView, StyleSheet} from 'react-native';
 import { Button } from 'react-native-paper';
 import { BiometricAuthentication } from '../authentication/BiometricAuthentication';
 
-export default function BiometricSignIn({ route }) {
-    const { setIsLoggedIn } = route.params;
+export default function BiometricSignIn({ setIsLoggedIn }) {
 
     const handleBiometricLogin = async () => {
         const success = await BiometricAuthentication();
