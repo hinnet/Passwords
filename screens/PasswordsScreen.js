@@ -1,26 +1,38 @@
 import { remove, onValue, ref } from 'firebase/database';
 import { database } from '../firebase/firebaseConfig';
 import { useEffect, useState } from 'react';
-import { ScrollView, SafeAreaView, FlatList, StyleSheet, View } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { Alert, Button, SafeAreaView, FlatList, StyleSheet, View } from 'react-native';
+import { Text, Card } from 'react-native-paper';
+import { getCurrentUser } from '../firebase/currentUser';
 
 export default function PasswordsScreen() {
-  // const [password, setPassword] = useState({
-  //   email: '',
-  //   website: '',
-  // })
   const [passwords, setPasswords] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    onValue(ref(database, '/passwords'), (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        setPasswords(Object.entries(data).map(([key, value]) => ({ ...value, id: key })));
-      } else {
-        setPasswords([]);
+    const fetchPasswords = async () => {
+      const currentUser = await getCurrentUser();
+      if (!currentUser) {
+        console.error('No user logged in');
+        return;
       }
-    })
+
+      setUser(currentUser);
+  
+      const userRef = ref(database, `users/${currentUser.uid}/passwords`);
+  
+      onValue(userRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            setPasswords(Object.entries(data).map(([key, value]) => ({ ...value, id: key })));
+        } else {
+            setPasswords([]);
+        }
+      });
+    };
+  
+    fetchPasswords();
   }, []);
 
   const handleDelete = (id) => {
@@ -32,27 +44,37 @@ export default function PasswordsScreen() {
       {
         text: 'OK',
         onPress: () => {
-            remove(ref(db, '/passwords/' + id));
-        }
-      }
+          remove(ref(database, `users/${user.uid}/passwords/${id}`));
+        },
+      },
     ]);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Searchbar
-        placeholder="Search..."
-        onChangeText={setSearchQuery}
-        value={searchQuery}
-        style={styles.searchbar}
-      />
       <FlatList 
         data={passwords}
-        renderItem={({ password }) =>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text>{password.email}</Text>
-              <Text>{password.website}</Text>
-              <Button title="DELETE" onPress={handleDelete} />
+        renderItem={({ item }) =>
+          <View style={styles.passwordContainer}>
+            <Card style={styles.cardContainer}>
+              <Card.Content>
+              <View style={styles.contentContainer}>
+                  <Text variant="titleMedium">Website: </Text>
+                  <Text variant="titleSmall">{item.website}</Text>
+                </View>
+                <View style={styles.contentContainer}>
+                  <Text variant="titleMedium">Email: </Text>
+                  <Text variant="titleSmall">{item.email}</Text>
+                </View>
+                <View style={styles.contentContainer}>
+                <Text variant="titleMedium">Password: </Text>
+                  <Text variant="titleSmall">{item.generatedPassword}</Text>
+                </View>
+              </Card.Content>
+              <Card.Actions>
+                <Button title="DELETE" onPress={() => handleDelete(item.id)} />
+              </Card.Actions>
+            </Card>
           </View>
         }
       />
@@ -70,5 +92,20 @@ const styles = StyleSheet.create({
   searchbar: {
     width: '90%',
     marginTop: 20,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    margin: 30,
+    marginBottom: -5,
+  },
+  cardContainer: {
+    width: '100%',
+    padding: 20,
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 5,
   },
 });

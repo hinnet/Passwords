@@ -1,11 +1,11 @@
 import { auth } from "./firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 
-export default function getCurrentUser() {
-    const uid = auth.currentUser?.uid;
-    
-    if (uid) {
-        return uid;
-    } else {
-        return null;
-    }
+export async function getCurrentUser() {
+    return new Promise((resolve) => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        unsubscribe();
+        resolve(user);
+        });
+    });
 };

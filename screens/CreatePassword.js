@@ -7,7 +7,7 @@ import EmailValidation from '../validation/input/EmailValidation';
 import WebsiteValidation from '../validation/input/WebsiteValidation';
 import { getPassword } from '../passwordApi';
 import { useEffect } from 'react';
-import getCurrentUser from '../firebase/currentUser';
+import { getCurrentUser } from '../firebase/currentUser';
 
 export default function CreatePassword({ navigation }) {
     const [password, setPassword] = useState({
@@ -15,7 +15,6 @@ export default function CreatePassword({ navigation }) {
         website: '',
         generatedPassword: '',
     });
-    const [passwords, setPasswords] = useState([]);
     const [emailError, setEmailError] = useState(false);
     const [websiteError, setWebsiteError] = useState(false);
 
@@ -23,25 +22,12 @@ export default function CreatePassword({ navigation }) {
         generateNewPassword();
     }, []);
 
-    // TODO: MOVE TO PASSWORDSSCREEN
-    // useEffect(() => {
-    //     onValue(ref(database, "/passwords"), (snapshot) => {
-    //         const data = snapshot.val();
-    //         if (data) {
-    //             setPasswords(Object.entries(data).map(([key, value]) => ({ ...value, id: key })));
-    //         } else {
-    //             setPasswords([]);
-    //         }
-    //     })
-    // }, []);
-
     const handleSave = async () => {
-        const uid = getCurrentUser();
-        console.log('UID:', uid);
+        const user = await getCurrentUser();
     
-        if (!uid) {
-            console.error('No user logged in');
-            return;
+        if (!user) {
+        console.error('No user logged in');
+        return;
         }
 
         try {
@@ -55,7 +41,7 @@ export default function CreatePassword({ navigation }) {
               return;
             }
 
-            await push(ref(database, `users/${uid}/passwords`), password);
+            await push(ref(database, `users/${user.uid}/passwords`), password);
             Alert.alert('Password saved successfully!'); 
             navigation.popToTop();    // returns to Home-page
         } catch (err) {
@@ -64,8 +50,9 @@ export default function CreatePassword({ navigation }) {
         }
     };
 
-    const generateNewPassword = () => {
-        setPassword({...password, generatedPassword: getPassword()})
+    const generateNewPassword = async () => {
+        const newPassword = await getPassword();
+        setPassword({...password, generatedPassword: newPassword})
     };
 
   return (
