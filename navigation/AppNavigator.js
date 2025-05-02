@@ -5,7 +5,7 @@ import CreatePassword from '../screens/CreatePassword';
 
 const Stack = createNativeStackNavigator();     // Returns React Native component named 'Stack'
 
-export default function StackNavigator({ setIsLoggedIn }) {
+export default function AppNavigator({ setIsLoggedIn }) {
     return(
         <Stack.Navigator>
             <Stack.Screen name="Home">

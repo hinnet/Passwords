@@ -3,7 +3,8 @@ import { Alert, Keyboard, TouchableWithoutFeedback, StyleSheet, SafeAreaView } f
 import { useState } from 'react';
 import { auth } from '../firebase/firebaseConfig';
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { EmailValidation, PasswordValidation } from '../validation/InputValidation';
+import EmailValidation from '../validation/input/EmailValidation';
+import { PasswordValidation } from '../validation/input/PasswordValidation';
 
 export default function SignUpScreen({ navigation }) {
     const [email, setEmail] = useState('');
@@ -104,4 +105,4 @@ const styles = StyleSheet.create({
         marginLeft: 25,
         alignSelf: 'flex-start',
     },
-  });
+});

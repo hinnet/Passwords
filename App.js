@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import { PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
-import StackNavigator from './navigation/StackNavigator';
-import { useState } from 'react';
+import AppNavigator from './navigation/AppNavigator';
 import LoginNavigator from './navigation/LoginNavigator';
 
 export default function App() {
@@ -11,7 +11,7 @@ export default function App() {
     <PaperProvider>
       <NavigationContainer>
         {isLoggedIn ? (
-          <StackNavigator setIsLoggedIn={setIsLoggedIn} />
+          <AppNavigator setIsLoggedIn={setIsLoggedIn} />
         ) : (
           <LoginNavigator setIsLoggedIn={setIsLoggedIn} />
         )}

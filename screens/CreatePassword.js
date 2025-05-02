@@ -1,19 +1,21 @@
 import { useState } from 'react';
-import { SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { database } from '../firebase/firebaseConfig';
-import { ref, push } from "firebase/database";
+import { ref, push, onValue } from "firebase/database";
 import { Button, HelperText, TextInput, IconButton, Text } from 'react-native-paper';
-import { EmailValidation, WebsiteValidation } from '../validation/InputValidation';
-import CryptoJS from 'crypto-js';
-import { getPassword } from '../password_api';
+import EmailValidation from '../validation/input/EmailValidation';
+import WebsiteValidation from '../validation/input/WebsiteValidation';
+import { getPassword } from '../passwordApi';
 import { useEffect } from 'react';
+import getCurrentUser from '../firebase/currentUser';
 
-export default function CreatePassword() {
+export default function CreatePassword({ navigation }) {
     const [password, setPassword] = useState({
         email: '',
         website: '',
         generatedPassword: '',
-    })
+    });
+    const [passwords, setPasswords] = useState([]);
     const [emailError, setEmailError] = useState(false);
     const [websiteError, setWebsiteError] = useState(false);
 
@@ -21,13 +23,44 @@ export default function CreatePassword() {
         generateNewPassword();
     }, []);
 
-    const handleSave = () => {
-        setEmailError(!EmailValidation(password.email));    // If email isn't valid, set error true
-        setWebsiteError(!WebsiteValidation(password.website));    // Same with website
-        if (emailError || websiteError) {
+    // TODO: MOVE TO PASSWORDSSCREEN
+    // useEffect(() => {
+    //     onValue(ref(database, "/passwords"), (snapshot) => {
+    //         const data = snapshot.val();
+    //         if (data) {
+    //             setPasswords(Object.entries(data).map(([key, value]) => ({ ...value, id: key })));
+    //         } else {
+    //             setPasswords([]);
+    //         }
+    //     })
+    // }, []);
+
+    const handleSave = async () => {
+        const uid = getCurrentUser();
+        console.log('UID:', uid);
+    
+        if (!uid) {
+            console.error('No user logged in');
             return;
-        } else {
-            push(ref(database, '/passwords'), password);
+        }
+
+        try {
+            const emailValid = EmailValidation(password.email);
+            const websiteValid = WebsiteValidation(password.website);
+        
+            setEmailError(!emailValid);     // If email isn't valid, set error true
+            setWebsiteError(!websiteValid);     // Same with website
+        
+            if (!emailValid || !websiteValid) {
+              return;
+            }
+
+            await push(ref(database, `users/${uid}/passwords`), password);
+            Alert.alert('Password saved successfully!'); 
+            navigation.popToTop();    // returns to Home-page
+        } catch (err) {
+            console.error(err);
+            Alert.alert('Not able to save password', 'Please, try again.');
         }
     };
 
@@ -65,7 +98,7 @@ export default function CreatePassword() {
             <IconButton
             icon="reload"
             size={20}
-            onPress={(generateNewPassword)}
+            onPress={generateNewPassword}
             />
         </View>
         </View>
@@ -139,4 +172,4 @@ const styles = StyleSheet.create({
         color: 'grey',
         fontSize: 16,
       },
-  });
+});
