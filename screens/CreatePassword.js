@@ -154,9 +154,9 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         paddingLeft: 15,
         backgroundColor: '#fff',
-      },
-      passwordText: {
+    },
+    passwordText: {
         color: 'grey',
         fontSize: 16,
-      },
+    },
 });

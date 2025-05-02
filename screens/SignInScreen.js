@@ -4,7 +4,6 @@ import { Button, TextInput, Text } from 'react-native-paper';
 import { useState } from 'react';
 import { auth } from '../firebase/firebaseConfig';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { BiometricAuthentication } from '../authentication/BiometricAuthentication';
 
 export default function SignInScreen({ navigation, setIsLoggedIn }) {
     const [email, setEmail] = useState('');
@@ -56,26 +55,17 @@ export default function SignInScreen({ navigation, setIsLoggedIn }) {
                 <Button 
                 mode="contained"
                 onPress={handleEmailLogin}
-                style={styles.button1}
-                labelStyle={{ fontSize: 16 }}
+                style={styles.button}
+                labelStyle={{ fontSize: 19 }}
                 >
                     Sign in
                 </Button>
-                <Text variant="titleSmall">or</Text>
-                <Button 
-                mode="contained"
-                onPress={() => BiometricAuthentication(setIsLoggedIn)}
-                style={styles.button2}
-                labelStyle={{ fontSize: 19 }}
-                >
-                    Sign in with Face ID / Touch ID
-                </Button>
-                <Text variant="titleMedium" style={{ marginTop: 25 }}>Not registered yet?</Text>
+                <Text variant="titleMedium" style={{ marginTop: 40, marginBottom: 10 }}>Not registered yet?</Text>
                 <Button 
                 mode="contained"
                 onPress={() => navigation.navigate('Sign up')} 
-                style={styles.button1}
-                labelStyle={{ fontSize: 16 }}
+                style={styles.button}
+                labelStyle={{ fontSize: 19 }}
                 >
                     Sign up
                 </Button>
@@ -97,16 +87,11 @@ const styles = StyleSheet.create({
         marginHorizontal: 30,
         height: 60,
     },
-    button1: {
+    button: {
         justifyContent: 'center',
-        height: 50,
+        width: '30%',
         margin: 15,
         borderRadius: 5,
-    },
-    button2: {
-        justifyContent: 'center',
-        height: 80,
-        borderRadius: 5,
-        margin: 15,
+        padding: 10,
     },
 });

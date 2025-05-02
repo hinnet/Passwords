@@ -1,18 +1,22 @@
 import { Alert } from 'react-native';
 import * as LocalAuthentication from 'expo-local-authentication';
 
-export async function BiometricAuthentication(setIsLoggedIn) {
+export async function BiometricAuthentication() {
     try {
         // Checks for biometric authentication compatibility on device
         const isCompatible = await LocalAuthentication.hasHardwareAsync();
         if (!isCompatible) {
-            throw new Error('Device is not compatible.');
+            Alert.alert('Device is not compatible');
+            return true;
+            // throw new Error('Device is not compatible');
         }
 
         // Checks for saved biometrics on device
         const isEnrolled = await LocalAuthentication.isEnrolledAsync();
         if (!isEnrolled) {
-            throw new Error('No FaceID or TouchID found');
+            Alert.alert('No FaceID or TouchID found');
+            return true;
+            // throw new Error('No FaceID or TouchID found');
         }
 
         // Attempt to use biometrics for authentication
@@ -22,13 +26,11 @@ export async function BiometricAuthentication(setIsLoggedIn) {
         })
 
         if (result.success) {
-            setIsLoggedIn(true);
             Alert.alert('Authenticated', 'Welcome!');
             return true;
         }
     } catch (err) {
         console.error('Error in authentication: ', err);
-        Alert.alert('An error has occurred');
         return false;
     };
 };
