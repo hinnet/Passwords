@@ -1,13 +1,12 @@
 import { remove, onValue, ref } from 'firebase/database';
 import { database } from '../firebase/firebaseConfig';
 import { useEffect, useState } from 'react';
-import { Alert, Button, SafeAreaView, FlatList, StyleSheet, View } from 'react-native';
-import { Text, Card } from 'react-native-paper';
+import { Alert, SafeAreaView, FlatList, StyleSheet, View } from 'react-native';
+import { Text, Card, IconButton } from 'react-native-paper';
 import { getCurrentUser } from '../firebase/currentUser';
 
-export default function PasswordsScreen() {
+export default function PasswordsScreen({ navigation }) {
   const [passwords, setPasswords] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -72,7 +71,19 @@ export default function PasswordsScreen() {
                 </View>
               </Card.Content>
               <Card.Actions>
-                <Button title="DELETE" onPress={() => handleDelete(item.id)} />
+                <IconButton
+                icon="square-edit-outline"
+                size={40}
+                mode='contained'
+                onPress={() => navigation.navigate('Edit Password', { data: item })}
+                />
+                <IconButton
+                icon="delete-forever"
+                iconColor='red'
+                size={40}
+                mode='contained'
+                onPress={() => handleDelete(item.id)}
+                />
               </Card.Actions>
             </Card>
           </View>
@@ -88,10 +99,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  searchbar: {
-    width: '90%',
-    marginTop: 20,
   },
   passwordContainer: {
     flexDirection: 'row',
