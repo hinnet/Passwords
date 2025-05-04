@@ -3,7 +3,7 @@ import { Alert, SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback, Vi
 import { StackActions } from '@react-navigation/native';
 import { database } from '../firebase/firebaseConfig';
 import { ref, set } from "firebase/database";
-import { Button, HelperText, TextInput, IconButton, Text } from 'react-native-paper';
+import { ActivityIndicator, Button, HelperText, TextInput, IconButton, Text } from 'react-native-paper';
 import EmailValidation from '../validation/input/EmailValidation';
 import WebsiteValidation from '../validation/input/WebsiteValidation';
 import { getPassword } from '../passwordApi';
@@ -19,7 +19,8 @@ export default function EditPasswordScreen({ route, navigation }) {
     });
     const [emailError, setEmailError] = useState(false);
     const [websiteError, setWebsiteError] = useState(false);
-    
+    const [loading, setLoading] = useState(false);
+
     const handleSave = async () => {
         const user = await getCurrentUser();
     
@@ -53,9 +54,16 @@ export default function EditPasswordScreen({ route, navigation }) {
     };
 
     const generateNewPassword = async () => {
-        const generatedPassword = await getPassword();
-        const encryptedPassword = await encryptPassword(generatedPassword);
-        setLoginCredentials({...loginCredentials, hashPassword: encryptedPassword });
+        setLoading(true);
+        try {
+            const generatedPassword = await getPassword();
+            const encryptedPassword = await encryptPassword(generatedPassword);
+            setLoginCredentials({...loginCredentials, hashPassword: encryptedPassword });
+        } catch (err) {
+            console.error('Error generating new password: ', err);
+        } finally {
+            setLoading(false);
+        }
     };
     
     
@@ -86,11 +94,15 @@ export default function EditPasswordScreen({ route, navigation }) {
                 <Text style={styles.floatingLabel}>Password</Text>
                 <View style={styles.passwordBox}>
                 <Text style={styles.passwordText}>{loginCredentials.hashPassword}</Text>
-                <IconButton
-                icon="reload"
-                size={20}
-                onPress={generateNewPassword}
-                />
+                { loading ? ( 
+                        <ActivityIndicator style={styles.activityIndicator} /> 
+                ) : ( 
+                    <IconButton
+                    icon="reload"
+                    size={25}
+                    onPress={generateNewPassword}
+                    /> 
+                )}
             </View>
             </View>
             <Button 

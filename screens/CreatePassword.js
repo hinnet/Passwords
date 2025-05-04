@@ -99,10 +99,7 @@ export default function CreatePassword({ navigation }) {
                 size={25}
                 onPress={generateNewPassword}
                 /> 
-                )
-            }
-
-            
+            )}
         </View>
         </View>
         <Button 
