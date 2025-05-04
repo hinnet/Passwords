@@ -1,10 +1,9 @@
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { Alert, Keyboard, TouchableWithoutFeedback, StyleSheet, SafeAreaView } from 'react-native';
 import { useState } from 'react';
-import { auth } from '../firebase/firebaseConfig';
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import EmailValidation from '../validation/input/EmailValidation';
 import { PasswordValidation } from '../validation/input/PasswordValidation';
+import { createUser } from '../firebase/createUser';
 
 export default function SignUpScreen({ navigation }) {
     const [email, setEmail] = useState('');
@@ -23,15 +22,7 @@ export default function SignUpScreen({ navigation }) {
         if (!emailIsValid || !passwordisValid) {
             return;
         }
-        createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
-            Alert.alert('Sign up successful!');
-            navigation.navigate('Sign in');
-        })
-        .catch((error) => {
-            console.error(error.message);
-            Alert.alert('Something went wrong', 'Please try again');
-        })
+        createUser(email, password);
     };
 
     const passwordDisplay = () => {

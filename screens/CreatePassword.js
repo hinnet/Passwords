@@ -52,7 +52,7 @@ export default function CreatePassword({ navigation }) {
 
     const generateNewPassword = async () => {
         const newPassword = await getPassword();
-        setPassword({...password, generatedPassword: newPassword})
+        setPassword({...password, generatedPassword: newPassword});
     };
 
   return (

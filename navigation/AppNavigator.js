@@ -15,6 +15,7 @@ export default function AppNavigator({ setIsLoggedIn }) {
             <Stack.Screen name="Passwords" component={PasswordsScreen} />
             <Stack.Screen name="Create Password" component={CreatePassword} />
             <Stack.Screen name="Edit Password" component={EditPasswordScreen} />
+            <Stack.Screen name="Settings" component={Settings} />
         </Stack.Navigator>
     );
 }
