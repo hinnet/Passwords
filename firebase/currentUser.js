@@ -1,11 +1,26 @@
 import { auth } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export const initializeAuthListener = (setUser, setIsLoggedIn) => {
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+            setUser(user);
+            setIsLoggedIn(true);
+        } else {
+            await AsyncStorage.removeItem('user');
+            setUser(null);
+            setIsLoggedIn(false);
+        }
+    })
+}
 
 export async function getCurrentUser() {
-    return new Promise((resolve) => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-        unsubscribe();
-        resolve(user);
-        });
-    });
-};
+    const storedUser = await AsyncStorage.getItem('user');
+    if (!storedUser) {
+        console.log('no stored user');
+        return;
+    }
+    return (JSON.parse(storedUser));
+}
