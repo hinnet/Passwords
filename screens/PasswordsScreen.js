@@ -19,7 +19,7 @@ export default function PasswordsScreen({ navigation }) {
 
       setUser(currentUser);
   
-      const userRef = ref(database, `users/${currentUser.uid}/passwords`);
+      const userRef = ref(database, `users/${currentUser.uid}/loginCredentials`);
   
       onValue(userRef, (snapshot) => {
         const data = snapshot.val();
@@ -43,7 +43,7 @@ export default function PasswordsScreen({ navigation }) {
       {
         text: 'OK',
         onPress: () => {
-          remove(ref(database, `users/${user.uid}/passwords/${id}`));
+          remove(ref(database, `users/${user.uid}/loginCredentials/${id}`));
         },
       },
     ]);
@@ -67,7 +67,7 @@ export default function PasswordsScreen({ navigation }) {
                 </View>
                 <View style={styles.contentContainer}>
                 <Text variant="titleMedium">Password: </Text>
-                  <Text variant="titleSmall">{item.generatedPassword}</Text>
+                  <Text variant="titleSmall">{item.hashPassword}</Text>
                 </View>
               </Card.Content>
               <Card.Actions>

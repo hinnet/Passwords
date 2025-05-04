@@ -8,13 +8,14 @@ import EmailValidation from '../validation/input/EmailValidation';
 import WebsiteValidation from '../validation/input/WebsiteValidation';
 import { getPassword } from '../passwordApi';
 import { getCurrentUser } from '../firebase/currentUser';
+import { encryptPassword } from '../crypto/PasswordEncryption';
 
 export default function EditPasswordScreen({ route, navigation }) {
     const item = route.params.data;
-    const [password, setPassword] = useState({
+    const [loginCredentials, setLoginCredentials] = useState({
         email: item.email,
         website: item.website,
-        generatedPassword: item.generatedPassword,
+        hashPassword: item.hashPassword,
     });
     const [emailError, setEmailError] = useState(false);
     const [websiteError, setWebsiteError] = useState(false);
@@ -28,8 +29,8 @@ export default function EditPasswordScreen({ route, navigation }) {
         }
 
         try {
-            const emailValid = EmailValidation(password.email);
-            const websiteValid = WebsiteValidation(password.website);
+            const emailValid = EmailValidation(loginCredentials.email);
+            const websiteValid = WebsiteValidation(loginCredentials.website);
         
             setEmailError(!emailValid);     // If email isn't valid, set error true
             setWebsiteError(!websiteValid);     // Same with website
@@ -38,10 +39,10 @@ export default function EditPasswordScreen({ route, navigation }) {
                 return;
             }
 
-            await set(ref(database, `users/${user.uid}/passwords/${item.id}`), {
-                email: password.email,
-                website: password.website,
-                generatedPassword: password.generatedPassword,
+            await set(ref(database, `users/${user.uid}/loginCredentials/${item.id}`), {
+                email: loginCredentials.email,
+                website: loginCredentials.website,
+                hashPassword: loginCredentials.hashPassword,
             });
             Alert.alert('Password updated successfully!'); 
             navigation.dispatch(StackActions.pop(1));    // Returns to previous page
@@ -52,9 +53,11 @@ export default function EditPasswordScreen({ route, navigation }) {
     };
 
     const generateNewPassword = async () => {
-        const newPassword = await getPassword();
-        setPassword({...password, generatedPassword: newPassword})
+        const generatedPassword = await getPassword();
+        const encryptedPassword = await encryptPassword(generatedPassword);
+        setLoginCredentials({...loginCredentials, hashPassword: encryptedPassword });
     };
+    
     
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -62,8 +65,8 @@ export default function EditPasswordScreen({ route, navigation }) {
             <TextInput
             label="Email"
             mode='outlined'
-            value={password.email}
-            onChangeText={email => setPassword({...password, email: email})}
+            value={loginCredentials.email}
+            onChangeText={email => setLoginCredentials({...loginCredentials, email: email})}
             style={styles.input}
             />
             <HelperText style={styles.helperText} type='error' visible={emailError}>
@@ -72,8 +75,8 @@ export default function EditPasswordScreen({ route, navigation }) {
             <TextInput
             label="Website"
             mode='outlined'
-            value={password.website}
-            onChangeText={website => setPassword({...password, website: website})}
+            value={loginCredentials.website}
+            onChangeText={website => setLoginCredentials({...loginCredentials, website: website})}
             style={styles.input}
             />
             <HelperText style={styles.helperText} type='error' visible={websiteError}>
@@ -82,7 +85,7 @@ export default function EditPasswordScreen({ route, navigation }) {
             <View style={styles.wrapper}>
                 <Text style={styles.floatingLabel}>Password</Text>
                 <View style={styles.passwordBox}>
-                <Text style={styles.passwordText}>{password.generatedPassword}</Text>
+                <Text style={styles.passwordText}>{loginCredentials.hashPassword}</Text>
                 <IconButton
                 icon="reload"
                 size={20}

@@ -23,6 +23,7 @@ export default function SignUpScreen({ navigation }) {
             return;
         }
         createUser(email, password);
+        navigation.navigate('Sign in');
     };
 
     const passwordDisplay = () => {

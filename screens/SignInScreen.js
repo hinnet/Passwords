@@ -1,5 +1,4 @@
-import { Alert } from 'react-native';
-import { SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Alert, SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Button, TextInput, Text } from 'react-native-paper';
 import { useState } from 'react';
 import { auth } from '../firebase/firebaseConfig';

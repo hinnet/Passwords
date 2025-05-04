@@ -1,4 +1,4 @@
-import { createSalt } from '../crypting/CreateSalt';
+import { generateSalt } from '../crypto/GenerateSalt';
 import { auth } from '../firebase/firebaseConfig';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -7,10 +7,9 @@ export async function createUser(email, password, navigation) {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        await createSalt(user);
+        await generateSalt(user);
 
         Alert.alert('Sign up successful!');
-        navigation.navigate('Sign in');
     } catch (error) {
         console.error(error.message);
         Alert.alert('Something went wrong', 'Please try again');

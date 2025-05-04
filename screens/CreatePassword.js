@@ -1,22 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Alert, SafeAreaView, StyleSheet, Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import { database } from '../firebase/firebaseConfig';
-import { ref, push, onValue } from "firebase/database";
-import { Button, HelperText, TextInput, IconButton, Text } from 'react-native-paper';
+import { ref, push } from "firebase/database";
+import { ActivityIndicator, Button, HelperText, TextInput, IconButton, Text } from 'react-native-paper';
 import EmailValidation from '../validation/input/EmailValidation';
 import WebsiteValidation from '../validation/input/WebsiteValidation';
 import { getPassword } from '../passwordApi';
-import { useEffect } from 'react';
 import { getCurrentUser } from '../firebase/currentUser';
+import { encryptPassword } from '../crypto/PasswordEncryption';
 
 export default function CreatePassword({ navigation }) {
-    const [password, setPassword] = useState({
+    const [loginCredentials, setLoginCredentials] = useState({
         email: '',
         website: '',
-        generatedPassword: '',
+        hashPassword: '',
     });
     const [emailError, setEmailError] = useState(false);
     const [websiteError, setWebsiteError] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         generateNewPassword();
@@ -31,8 +32,8 @@ export default function CreatePassword({ navigation }) {
         }
 
         try {
-            const emailValid = EmailValidation(password.email);
-            const websiteValid = WebsiteValidation(password.website);
+            const emailValid = EmailValidation(loginCredentials.email);
+            const websiteValid = WebsiteValidation(loginCredentials.website);
         
             setEmailError(!emailValid);     // If email isn't valid, set error true
             setWebsiteError(!websiteValid);     // Same with website
@@ -41,8 +42,8 @@ export default function CreatePassword({ navigation }) {
               return;
             }
 
-            await push(ref(database, `users/${user.uid}/passwords`), password);
-            Alert.alert('Password saved successfully!'); 
+            await push(ref(database, `users/${user.uid}/loginCredentials`), loginCredentials);
+            Alert.alert('Password saved successfully!');
             navigation.popToTop();    // returns to Home-page
         } catch (err) {
             console.error(err);
@@ -51,8 +52,16 @@ export default function CreatePassword({ navigation }) {
     };
 
     const generateNewPassword = async () => {
-        const newPassword = await getPassword();
-        setPassword({...password, generatedPassword: newPassword});
+        setLoading(true);
+        try {
+            const generatedPassword = await getPassword();
+            const encryptedPassword = await encryptPassword(generatedPassword);
+            setLoginCredentials({...loginCredentials, hashPassword: encryptedPassword });
+        } catch (err) {
+            console.error('Error generating new password: ', err);
+        } finally {
+            setLoading(false);
+        }
     };
 
   return (
@@ -61,8 +70,8 @@ export default function CreatePassword({ navigation }) {
         <TextInput
         label="Email"
         mode='outlined'
-        value={password.email}
-        onChangeText={email => setPassword({...password, email})}
+        value={loginCredentials.email}
+        onChangeText={email => setLoginCredentials({...loginCredentials, email})}
         style={styles.input}
         />
         <HelperText style={styles.helperText} type='error' visible={emailError}>
@@ -71,8 +80,8 @@ export default function CreatePassword({ navigation }) {
         <TextInput
         label="Website"
         mode='outlined'
-        value={password.website}
-        onChangeText={website => setPassword({...password, website})}
+        value={loginCredentials.website}
+        onChangeText={website => setLoginCredentials({...loginCredentials, website})}
         style={styles.input}
         />
         <HelperText style={styles.helperText} type='error' visible={websiteError}>
@@ -81,12 +90,19 @@ export default function CreatePassword({ navigation }) {
         <View style={styles.wrapper}>
             <Text style={styles.floatingLabel}>Password</Text>
             <View style={styles.passwordBox}>
-            <Text style={styles.passwordText}>{password.generatedPassword}</Text>
-            <IconButton
-            icon="reload"
-            size={20}
-            onPress={generateNewPassword}
-            />
+            <Text style={styles.passwordText}>{loginCredentials.hashPassword}</Text>
+            { loading ? ( 
+                <ActivityIndicator style={styles.activityIndicator} /> 
+            ) : ( 
+                <IconButton
+                icon="reload"
+                size={25}
+                onPress={generateNewPassword}
+                /> 
+                )
+            }
+
+            
         </View>
         </View>
         <Button 
@@ -158,5 +174,9 @@ const styles = StyleSheet.create({
     passwordText: {
         color: 'grey',
         fontSize: 16,
+    },
+    activityIndicator: {
+        size: 11,
+        marginRight: 15,
     },
 });
