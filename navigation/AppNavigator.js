@@ -1,10 +1,12 @@
+/* This navigator is used inside app after signing in. */
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import IndexScreen from "../screens/IndexScreen";
 import PasswordsScreen from "../screens/PasswordsScreen";
 import CreatePassword from "../screens/CreatePassword";
 import EditPasswordScreen from "../screens/EditPasswordScreen";
 
-const Stack = createNativeStackNavigator(); // Returns React Native component named 'Stack'
+const Stack = createNativeStackNavigator();
 
 export default function AppNavigator({ setIsLoggedIn }) {
   return (

@@ -1,8 +1,9 @@
+/* This navigator is used before user signs in */
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignInScreen from "../screens/SignInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 
-// Returns React Native component named 'Stack'
 const Stack = createNativeStackNavigator();
 
 export default function LoginNavigator({ setIsLoggedIn }) {

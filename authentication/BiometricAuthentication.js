@@ -1,3 +1,8 @@
+/*
+This module handles biometric authentication using expo-local-authentication,
+primarily targeting iOS Face ID and Touch ID support.
+*/
+
 import { Alert } from "react-native";
 import * as LocalAuthentication from "expo-local-authentication";
 
