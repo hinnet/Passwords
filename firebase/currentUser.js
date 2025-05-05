@@ -17,10 +17,10 @@ export const initializeAuthListener = (setUser, setIsLoggedIn) => {
 }
 
 export async function getCurrentUser() {
-    const storedUser = await AsyncStorage.getItem('user');
-    if (!storedUser) {
+    const currentUser = await AsyncStorage.getItem('user');
+    if (!currentUser) {
         console.log('no stored user');
         return;
     }
-    return (JSON.parse(storedUser));
+    return (JSON.parse(currentUser));
 }
