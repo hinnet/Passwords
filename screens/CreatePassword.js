@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
-  View,
 } from "react-native";
 import { database } from "../firebase/firebaseConfig";
 import { ref, push } from "firebase/database";
@@ -14,8 +13,6 @@ import {
   Button,
   HelperText,
   TextInput,
-  IconButton,
-  Text,
 } from "react-native-paper";
 import EmailValidation from "../validation/input/EmailValidation";
 import WebsiteValidation from "../validation/input/WebsiteValidation";
@@ -62,7 +59,7 @@ export default function CreatePassword({ navigation }) {
         loginCredentials
       );
       Alert.alert("Password saved successfully!");
-      navigation.popToTop(); // returns to Home-page
+      navigation.popToTop(); // Returns to Home-page
     } catch (err) {
       console.error(err);
       Alert.alert("Not able to save password", "Please, try again.");

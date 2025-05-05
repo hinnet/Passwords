@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
-  View,
 } from "react-native";
 import { StackActions } from "@react-navigation/native";
 import { database } from "../firebase/firebaseConfig";
@@ -15,8 +14,6 @@ import {
   Button,
   HelperText,
   TextInput,
-  IconButton,
-  Text,
 } from "react-native-paper";
 import EmailValidation from "../validation/input/EmailValidation";
 import WebsiteValidation from "../validation/input/WebsiteValidation";

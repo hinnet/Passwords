@@ -1,6 +1,6 @@
 import { getCurrentUser } from "../firebase/currentUser";
 import { generateSalt } from "./GenerateSalt";
-import { ref, set, get } from "firebase/database";
+import { ref, get } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
 import CryptoJS from "crypto-js";
 import * as ExpoCrypto from "expo-crypto";

@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, SafeAreaView, ImageBackground } from "react-native";
+import { Alert, StyleSheet, SafeAreaView } from "react-native";
 import { Card, Text, IconButton } from "react-native-paper";
 import signUserOut from "../firebase/signUserOut";
 import { BiometricAuthentication } from "../authentication/BiometricAuthentication";
