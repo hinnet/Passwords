@@ -9,6 +9,7 @@ import WebsiteValidation from '../validation/input/WebsiteValidation';
 import { getPassword } from '../passwordApi';
 import { getCurrentUser } from '../firebase/currentUser';
 import { encryptPassword } from '../crypto/PasswordEncryption';
+import BackgroundColor from './BackgroundColor';
 
 export default function EditPasswordScreen({ route, navigation }) {
     const item = route.params.data;
@@ -70,6 +71,7 @@ export default function EditPasswordScreen({ route, navigation }) {
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <SafeAreaView style={styles.container}>
+            <BackgroundColor />
             <TextInput
             label="Email"
             mode='outlined'
@@ -90,21 +92,26 @@ export default function EditPasswordScreen({ route, navigation }) {
             <HelperText style={styles.helperText} type='error' visible={websiteError}>
                 Set website or service provider
             </HelperText>
-            <View style={styles.wrapper}>
-                <Text style={styles.floatingLabel}>Password</Text>
-                <View style={styles.passwordBox}>
-                <Text style={styles.passwordText}>{loginCredentials.hashPassword}</Text>
-                { loading ? ( 
-                        <ActivityIndicator style={styles.activityIndicator} /> 
-                ) : ( 
-                    <IconButton
-                    icon="reload"
+            <TextInput
+            label="Password"
+            value={loginCredentials.hashPassword}
+            mode='outlined'
+            style={styles.input}
+            disabled
+            right={ 
+                loading ? (
+                    <TextInput.Icon
+                    icon={() => <ActivityIndicator style={styles.activityIndicator} />}
+                    />
+                ) : (
+                    <TextInput.Icon
+                    icon='reload'
                     size={25}
+                    color="rgb(191, 200, 202)"
                     onPress={generateNewPassword}
                     /> 
                 )}
-            </View>
-            </View>
+            />
             <Button 
             mode="contained"
             onPress={handleSave}
@@ -135,44 +142,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 50,
         margin: 15,
+        marginTop: 30,
         borderRadius: 5,
     },
     helperText: {
         marginTop: -5,
+        marginBottom: 10,
         marginLeft: 25,
         alignSelf: 'flex-start',
     },
-    wrapper: {
-        marginVertical: 20,
-        position: 'relative',
-        width: '100%',
-    },
-    floatingLabel: {
-        position: 'absolute',
-        top: -3,
-        left: 39,
-        backgroundColor: '#fff',
-        paddingHorizontal: 6,
-        fontSize: 12,
-        color: '#666',
-        zIndex: 1,
-    },
-    passwordBox: {
-        flexDirection: 'row',
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        marginVertical: 5,
-        marginHorizontal: 30,
-        height: 60,
-        justifyContent: 'space-between',
-        borderWidth: 1,
-        borderColor: 'grey',
-        borderRadius: 4,
-        paddingLeft: 15,
-        backgroundColor: '#fff',
-    },
-    passwordText: {
-        color: 'grey',
-        fontSize: 16,
+    activityIndicator: {
+        size: 10,
+        marginRight: 8,
     },
 });

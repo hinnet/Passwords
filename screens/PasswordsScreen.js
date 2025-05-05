@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Alert, SafeAreaView, FlatList, StyleSheet, View } from 'react-native';
 import { Text, Card, IconButton } from 'react-native-paper';
 import { getCurrentUser } from '../firebase/currentUser';
+import BackgroundColor from './BackgroundColor';
 
 export default function PasswordsScreen({ navigation }) {
   const [passwords, setPasswords] = useState([]);
@@ -51,6 +52,7 @@ export default function PasswordsScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <BackgroundColor />
       <FlatList 
         data={passwords}
         renderItem={({ item }) =>

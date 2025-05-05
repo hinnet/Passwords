@@ -3,6 +3,7 @@ import { Button, TextInput, Text } from 'react-native-paper';
 import { useState } from 'react';
 import { auth } from '../firebase/firebaseConfig';
 import { signInWithEmailAndPassword } from "firebase/auth";
+import BackgroundColor from './BackgroundColor';
 
 export default function SignInScreen({ navigation, setIsLoggedIn }) {
     const [email, setEmail] = useState('');
@@ -13,7 +14,6 @@ export default function SignInScreen({ navigation, setIsLoggedIn }) {
         signInWithEmailAndPassword(auth, email, password)
             .then(() => {
                 setIsLoggedIn(true);
-                Alert.alert('Authenticated', 'Welcome!');
             })
             .catch((error) => {
                 console.error('Error in signing in', error);
@@ -29,6 +29,7 @@ export default function SignInScreen({ navigation, setIsLoggedIn }) {
         // Hides displayed keyboard if user presses anywhere outside of keyboard on the screen
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <SafeAreaView style={styles.container}>
+                <BackgroundColor />
                 <Text variant="displayMedium" style={{ marginBottom: 40 }}>Log in</Text>
                 <TextInput 
                 label="Email"

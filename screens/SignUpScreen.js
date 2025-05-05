@@ -1,9 +1,10 @@
 import { Button, HelperText, TextInput } from 'react-native-paper';
-import { Alert, Keyboard, TouchableWithoutFeedback, StyleSheet, SafeAreaView } from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, StyleSheet, SafeAreaView } from 'react-native';
 import { useState } from 'react';
 import EmailValidation from '../validation/input/EmailValidation';
 import { PasswordValidation } from '../validation/input/PasswordValidation';
 import { createUser } from '../firebase/createUser';
+import BackgroundColor from './BackgroundColor';
 
 export default function SignUpScreen({ navigation }) {
     const [email, setEmail] = useState('');
@@ -33,6 +34,7 @@ export default function SignUpScreen({ navigation }) {
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <SafeAreaView style={styles.container}>
+                <BackgroundColor />
                 <TextInput
                 label="Email"
                 mode='outlined'
@@ -94,6 +96,7 @@ const styles = StyleSheet.create({
     },
     helperText: {
         marginTop: -5,
+        marginBottom: 10,
         marginLeft: 25,
         alignSelf: 'flex-start',
     },
