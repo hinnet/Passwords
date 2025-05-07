@@ -1,6 +1,12 @@
 # Password Expo Go Application
 
-This application is used for registered users to generate and store strong passwords.
+This project is my graded final project for the course Mobile Programming.
+The application is built using React Native and Expo. It uses Firebase for database and user management. Registered users can generate and store strong passwords using the app.
+
+The application was originally developed with iOS devices in mind.
+However, after Expo Go updated to SDK version 53, compatibility issues arose with Firebase Authentication. Since Apple restricts app downloads to the latest version only, reverting to an earlier working version is not possible.
+Due to these limitations, the application can currently be used on Android devices, the Android Emulator, and the Apple Simulator.
+For more information, see the [How to Get Started](#how-to-get-started)section.
 
 ## Technologies
 
@@ -22,3 +28,8 @@ This application is used for registered users to generate and store strong passw
 
 ### Testing:
 - **Expo Go**: For running the mobile app on device and testing manually.
+
+## How to Get Started
+Download Expo Go SDK version 52 from https://expo.dev/go on Android device.
+
+NOTE: Further instructions are in progress...
