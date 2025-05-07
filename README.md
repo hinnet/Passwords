@@ -6,7 +6,7 @@ The application is built using React Native and Expo. It uses Firebase for datab
 The application was originally developed with iOS devices in mind.
 However, after Expo Go updated to SDK version 53, compatibility issues arose with Firebase Authentication. Since Apple restricts app downloads to the latest version only, reverting to an earlier working version is not possible.
 Due to these limitations, the application can currently be used on Android devices, the Android Emulator, and the Apple Simulator.
-For more information, see the [How to Get Started](#how-to-get-started)section.
+For more information, see the [How to Get Started](#how-to-get-started) section.
 
 ## Technologies
 
