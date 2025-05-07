@@ -23,13 +23,13 @@ For more information, see the [How to Get Started](#how-to-get-started) section.
 - **Firebase Authentication**: Used for user management.
 
 ### Encryption:
-- **Expo Crypto**: For generating a unique salt value for each user.
-- **CryptoJS**: For encrypting generated passwords.
+- **Expo Crypto**: Used for generating a unique salt value for each user.
+- **CryptoJS**: Used for encrypting generated passwords.
 
 ### Testing:
-- **Expo Go**: For running the mobile app on device and testing manually.
+- **Expo Go**: Used for running the mobile app on device and testing manually.
 
 ## How to Get Started
-Download Expo Go SDK version 52 from https://expo.dev/go on Android device.
+Download Expo Go SDK version 52 from https://expo.dev/go on device.
 
 NOTE: Further instructions are in progress...
